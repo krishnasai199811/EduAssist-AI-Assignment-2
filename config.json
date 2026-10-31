@@ -1,0 +1,20 @@
+{
+  "model_config": {
+    "model_name": "gemini-3.5-flash-lite",
+    "api_version": "v1beta",
+    "pricing_date": "October 2026",
+    "currency": "INR"
+  },
+  "pricing_inr_per_million": {
+    "input_price": 6.25,
+    "output_price": 25.00
+  },
+  "mlflow_config": {
+    "experiment_name": "eduassist_llmops_assignment",
+    "prompt_name": "academic_assistant_prompt",
+    "production_alias": "production"
+  },
+  "workload_simulation": {
+    "projected_monthly_requests": 10000
+  }
+}

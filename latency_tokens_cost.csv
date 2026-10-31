@@ -1,0 +1,175 @@
+question_id,prompt_version,model_name,start_time,end_time,latency_seconds,response_status,input_tokens,output_tokens,total_tokens,input_cost_inr,output_cost_inr,total_cost_inr,valid_json,response_text
+Q1,v1,gemini-3.5-flash-lite,2026-10-31T10:17:11.261107+00:00,2026-10-31T10:17:12.722612+00:00,1.4615,Success,29,166,195,0.000181,0.00415,0.004331,False,"The primary architectural difference between a star schema and a snowflake schema lies in **how the dimension tables are structured**.
+
+*   **Star Schema:** The dimension tables are **denormalized**. This means all the descriptive attributes related to a dimension are kept in a single, flat table connected directly to the central fact table. (It gets its name because the diagram resembles a star, with the fact table in the center and dimension tables radiating outward).
+*   **Snowflake Schema:** The dimension tables are **normalized**. This means that hierarchical data within the dimensions is split out into separate, secondary tables. For example, a flattened ""Product"" dimension in a star schema might be split into ""Product,"" ""Product Subcategory,"" and ""Product Category"" tables in a snowflake schema, branching out further (hence the snowflake appearance)."
+Q2,v1,gemini-3.5-flash-lite,2026-10-31T10:17:12.724117+00:00,2026-10-31T10:17:16.090387+00:00,3.3663,Success,30,913,943,0.000188,0.022825,0.023012,False,"Here is a clear and comprehensive explanation of database normalization and the importance of the Third Normal Form (3NF) tailored for a student.
+
+---
+
+### Part 1: What is Database Normalization?
+
+**Database normalization** is the systematic process of organizing data within a relational database to minimize data redundancy (duplication) and improve data integrity (accuracy and consistency). 
+
+Imagine you are keeping track of students and the courses they take in a single, massive spreadsheet. Every time a student enrolls in a class, you might repeat the student's home address, major, and advisor's name. If the student changes their address, you have to update it in multiple places. If you miss one, your data becomes inconsistent.
+
+Normalization solves this by breaking down a large, unwieldy table into smaller, logical tables and defining relationships between them using **primary keys** and **foreign keys**.
+
+Normalization is typically achieved in stages called **Normal Forms (NF)**. Each higher normal form builds on the previous one to further remove data anomalies. While there are several levels, the standard benchmark for most transactional relational databases is **Third Normal Form (3NF)**.
+
+---
+
+### Part 2: Why Achieving Third Normal Form (3NF) is Critical
+
+To understand 3NF, we must briefly look at the steps leading up to it:
+*   **1NF (First Normal Form):** Ensures that all columns contain atomic (indivisible) values and that each row is unique (no repeating groups or arrays).
+*   **2NF (Second Normal Form):** Must be in 1NF and have no *partial dependencies* (all non-key attributes must depend on the *entire* primary key, not just part of it).
+*   **3NF (Third Normal Form):** Must be in 2NF and have no *transitive dependencies* (non-key attributes must depend **only** on the primary key, not on other non-key attributes). In short: *""The key, the whole key, and nothing but the key, so help me Codd.""*
+
+Achieving 3NF is critical in relational database systems for several key reasons:
+
+#### 1. Elimination of Data Redundancy
+3NF ensures that data is stored only once. For example, if you have an `Employees` table with columns `Employee_ID`, `Department_ID`, and `Department_Name`, a transitive dependency exists because `Department_Name` depends on `Department_ID`, which is not the primary key. In 3NF, you split this into an `Employees` table and a `Departments` table. This drastically reduces the physical storage space required by the database.
+
+#### 2. Prevention of Update Anomalies
+Without 3NF, updating a piece of information requires changing it in multiple rows. If an employee's department name changes, you would have to update every single row associated with that department. If you miss one, the database enters an inconsistent state (an update anomaly). 3NF ensures you only have to update the data in **one place**.
+
+#### 3. Prevention of Insertion and Deletion Anomalies
+*   **Insertion Anomaly:** If data is interdependent within the same table, you might not be able to insert new data without also providing unrelated data. 
+*   **Deletion Anomaly:** Deleting one piece of data might unintentionally erase other critical data. 
+By isolating concepts into their own tables in 3NF, you can insert, update, or delete records independently without risking the loss of unrelated information.
+
+#### 4. Improved Data Integrity and Accuracy
+Because data is not duplicated, the risk of human or application error during data entry and updates is minimized. This guarantees that queries return accurate, reliable results.
+
+#### 5. Easier Maintenance and Scalability
+A 3NF-compliant database mirrors real-world relationships more accurately. As a business grows and its data requirements change, a normalized database is much easier to modify, expand, and maintain without breaking existing applications.
+
+---
+
+### Summary
+Database normalization is the process of structuring data to reduce duplication. **Third Normal Form (3NF)** is critical because it removes transitive dependencies, ensuring that every non-key column depends solely on the primary key. This results in a database that uses less storage, prevents data corruption (anomalies), and remains reliable, accurate, and easy to maintain over time."
+Q3,v1,gemini-3.5-flash-lite,2026-10-31T10:17:16.093283+00:00,2026-10-31T10:17:19.087078+00:00,2.9938,Success,31,656,687,0.000194,0.0164,0.016594,False,"Here is a clear and concise explanation of overfitting and how L1/L2 regularization mitigates it.
+
+---
+
+### 1. What is Overfitting?
+
+**Overfitting** occurs when a machine learning model learns the training data *too well*, capturing not just the underlying patterns, but also the random noise and specific quirks of that particular dataset. 
+
+* **The Analogy:** Imagine a student memorizing the exact answers to a specific practice test, rather than learning the actual concepts. They will get a 100% on that exact test, but when given a new test with different questions, they will fail.
+* **The Problem:** An overfitted model has **high variance**. It performs exceptionally well on training data, but poorly on unseen test or real-world data.
+
+---
+
+### 2. How Regularization Mitigates Overfitting
+
+**Regularization** is a technique used to prevent overfitting by adding a penalty to the model’s complexity. 
+
+In linear models, the goal is to find coefficients (weights) for your input features that minimize the prediction error (Loss). Regularization adds a **penalty term** to this loss function. If the model tries to assign huge weights to certain features to fit the training noise, the penalty makes the total loss very high. Therefore, the model is forced to learn simpler, more generalized patterns.
+
+There are two main types: **L1 Regularization (Lasso)** and **L2 Regularization (Ridge)**.
+
+---
+
+### 3. L1 Regularization (Lasso)
+
+* **How it works:** L1 adds a penalty proportional to the **absolute value** of the model's coefficients. 
+* **The Effect (Feature Selection):** L1 regularization can drive the coefficients of less important features **all the way to zero**. 
+* **How it helps:** By eliminating irrelevant features entirely, L1 performs automatic feature selection, resulting in a simpler, sparser model that only focuses on the most critical inputs.
+
+---
+
+### 4. L2 Regularization (Ridge)
+
+* **How it works:** L2 adds a penalty proportional to the **squared value** of the model's coefficients. 
+* **The Effect (Shrinkage):** L2 shrinks the coefficients of all features toward zero, but it rarely makes them absolute zero. 
+* **How it helps:** By keeping all features but making their weights very small, L2 prevents any single feature from having too much influence on the prediction. This smooths out the model and reduces its sensitivity to small changes in the input data.
+
+---
+
+### Summary
+
+| Feature | L1 Regularization (Lasso) | L2 Regularization (Ridge) |
+| :--- | :--- | :--- |
+| **Penalty Type** | Absolute values of weights ($|w$) | Squared values of weights ($w^2$) |
+| **Effect on Weights** | Can shrink weights to **zero** | Shrinks weights **close to zero**, but not zero |
+| **Main Benefit** | Performs feature selection (removes useless variables) | Keeps all features, reduces model complexity and sensitivity |"
+Q4,v1,gemini-3.5-flash-lite,2026-10-31T10:17:19.089227+00:00,2026-10-31T10:17:21.542669+00:00,2.4534,Success,26,583,609,0.000162,0.014575,0.014737,False,"During the backpropagation pass in neural networks, gradient descent updates the parameters (weights and biases) by using the **chain rule of calculus** to measure how much each parameter contributed to the network's final error. 
+
+Here is a step-by-step breakdown of how the process works:
+
+---
+
+### 1. The Forward Pass (Setting the Stage)
+Before parameters can be updated, the network must make a prediction. Input data is passed forward through the network, layer by layer, until an output is generated. 
+
+### 2. Calculating the Error (Loss)
+Once the output is produced, a **loss function** compares the network's prediction against the actual target value. This produces a single number representing the error. The goal of gradient descent is to minimize this error.
+
+### 3. The Backward Pass (Computing Gradients)
+Backpropagation works backward from the output layer to the input layer. 
+* Using the **chain rule**, the network calculates the partial derivative of the loss function with respect to every single weight and bias. 
+* These derivatives are called **gradients**. 
+* A gradient tells us two things:
+  1. **Direction:** Whether increasing or decreasing a parameter will increase or decrease the error.
+  2. **Magnitude:** How steeply the error changes relative to that parameter.
+
+### 4. The Parameter Update (Gradient Descent)
+Once the gradients for all parameters are known, **gradient descent** updates the weights and biases to reduce the error. The standard update rule for a parameter (let's call it $w$) is:
+
+$$w_{\text{new}} = w_{\text{old}} - (\alpha \times \frac{\partial L}{\partial w})$$
+
+Where:
+* **$w_{\text{old}}$:** The current weight before the update.
+* **$\frac{\partial L}{\partial w}$:** The gradient (the derivative of the Loss $L$ with respect to the weight $w$). It tells us which way to move.
+* **$\alpha$ (Alpha):** The **learning rate**. This is a hyperparameter that controls the step size. If $\alpha$ is too large, the model might overshoot the minimum error; if it is too small, training will take too long.
+* **$-$(Minus sign):** We subtract the gradient because we want to move in the *opposite* direction of the slope (stepping down toward the minimum error, like walking down a hill).
+
+### Summary
+In short, backpropagation figures out **how much blame** each parameter has for the network's mistake, and gradient descent **nudges** those parameters slightly in the opposite direction of the blame to make the network more accurate next time. This cycle repeats for thousands or millions of iterations until the error is minimized."
+Q5,v1,gemini-3.5-flash-lite,2026-10-31T10:17:21.544867+00:00,2026-10-31T10:17:25.108177+00:00,3.5633,Success,29,869,898,0.000181,0.021725,0.021906,False,"To understand the trade-offs between **batch processing** and **stream processing**, it helps to first define them:
+
+*   **Batch Processing** collects and stores data over a set period (e.g., hourly, nightly) and processes it all at once in large chunks.
+*   **Stream Processing** ingests, processes, and analyzes data in real-time or near-real-time as it is generated (event-by-event).
+
+Both are vital to modern data pipelines, but choosing between them involves balancing several key trade-offs:
+
+---
+
+### 1. Latency vs. Throughput
+*   **Batch Processing (High Latency, High Throughput):** Because it waits for data to accumulate, batch processing is optimized for massive volumes of data. It processes data efficiently in bulk, making full use of computing resources. However, the data is stale (latency can range from hours to days).
+*   **Stream Processing (Low Latency, Lower Peak Throughput):** Streams provide insights in milliseconds or seconds. However, processing data continuously requires keeping pipelines open constantly, which can make handling sudden massive spikes in data (like a Black Friday traffic surge) more complex and resource-intensive.
+
+### 2. Cost and Resource Efficiency
+*   **Batch Processing (Cost-Effective):** Batch jobs spin up computing clusters (e.g., Spark, Databricks, Snowflake) only when needed—like running a nightly script—and shut them down immediately after. You only pay for the exact compute time used.
+*   **Stream Processing (More Expensive):** Streaming architectures (e.g., Apache Kafka, Flink) typically require infrastructure to run **24/7**, even if data volume drops to zero overnight. This constant uptime usually translates to higher cloud hosting costs.
+
+### 3. Complexity and Maintenance
+*   **Batch Processing (Simpler):** Batch pipelines are easier to design, debug, and monitor. If a batch job fails at 2:00 AM, you simply fix the code and rerun the job for that specific time window. 
+*   **Stream Processing (Complex):** Streaming pipelines are notoriously difficult to build and maintain. Developers must account for out-of-order data, network delays, exactly-once processing semantics, and state management. Debugging a distributed real-time stream is significantly harder than debugging a static log file.
+
+### 4. Data Accuracy and Completeness
+*   **Batch Processing (High Accuracy):** Batch jobs usually have access to the *complete* dataset for a given time period. They can easily handle deduplication, global sorting, and complex aggregations because all the data is present at once.
+*   **Stream Processing (Trade-off with Completeness):** Streams prioritize speed over completeness. To process data instantly, streams often must make guesses or use approximations (e.g., using ""tumbling windows"" or HyperLogLog algorithms). Late-arriving data can also complicate real-time metrics.
+
+---
+
+### Summary Comparison Table
+
+| Feature | Batch Processing | Stream Processing |
+| :--- | :--- | :--- |
+| **Primary Goal** | Deep historical analysis, massive scale | Real-time alerts, immediate actions |
+| **Latency** | Hours, days (High) | Milliseconds, seconds (Low) |
+| **Cost** | Lower (Pay-per-run) | Higher (Always-on infrastructure) |
+| **Complexity**| Low to Moderate | High |
+| **Tools** | Hadoop, Snowflake, dbt, Airflow | Kafka, Flink, Spark Streaming |
+
+---
+
+### The Modern Solution: The Lambda & Kappa Architectures
+
+Because neither approach is perfect, modern data engineering often combines both:
+
+1.  **Lambda Architecture:** Uses a batch layer to provide accurate, comprehensive historical views, and a speed layer to handle real-time data for recent events. The two are merged for the end user.
+2.  **Kappa Architecture:** Attempts to simplify this by treating *everything* as a stream. Historical data is simply re-streamed through the processing engine when needed, aiming to get the best of both worlds with a single codebase."

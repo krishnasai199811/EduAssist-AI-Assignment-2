@@ -1,0 +1,41 @@
+{
+  "questions": [
+    {
+      "question_id": "Q1",
+      "question": "What is the primary architectural difference between a star schema and a snowflake schema in data warehousing?"
+    },
+    {
+      "question_id": "Q2",
+      "question": "Explain database normalization and why achieving Third Normal Form (3NF) is critical in relational systems."
+    },
+    {
+      "question_id": "Q3",
+      "question": "What is overfitting in machine learning models, and how does L1/L2 regularization mitigate it?"
+    },
+    {
+      "question_id": "Q4",
+      "question": "How does gradient descent update parameters during the backpropagation pass in neural networks?"
+    },
+    {
+      "question_id": "Q5",
+      "question": "Explain the trade-offs between batch processing and stream processing in modern ETL and data pipelines."
+    }
+  ],
+  "prompts": {
+    "v1": {
+      "name": "Basic",
+      "commit_message": "Initial basic academic question answering prompt",
+      "template": "Answer the following student question clearly.\nQuestion: {{question}}"
+    },
+    "v2": {
+      "name": "Structured",
+      "commit_message": "Add system role, clarity constraints, and target undergraduate reading level",
+      "template": "You are an academic assistant.\nAnswer the following student question in a clear, concise, and accurate manner.\nUse simple language suitable for undergraduate students.\nQuestion: {{question}}"
+    },
+    "v3": {
+      "name": "JSON Output",
+      "commit_message": "Enforce strict JSON schema, confidence ratings, and disable markdown code fences",
+      "template": "You are an academic assistant.\nAnswer the student question and return ONLY valid JSON.\nDo not include markdown, explanations outside JSON, or code fences.\nUse this exact JSON schema:\n{\n\"answer\": \"string\",\n\"confidence\": \"high | medium | low\",\n\"key_points\": [\"string\"]\n}\nQuestion: {{question}}"
+    }
+  }
+}
